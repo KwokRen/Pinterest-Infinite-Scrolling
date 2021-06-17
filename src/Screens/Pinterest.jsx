@@ -4,18 +4,18 @@ import '../Styles/Pinterest.css';
 export default function Pinterest () {
 
     const [items, setItems] = useState([]);
-    const [allItems, setAllItems] = useState([]);
     const [sliceNum, setSliceNum] = useState(0);
     const [doneSlicing, setDoneSlicing] = useState(false);
     const [loading, setLoading] = useState(true);
     
-    const getData = () => {
+    const getData = (signal) => {
       console.log("fetching")
         fetch('nyc_ttp_pins.json'
         ,{
           headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'signal': signal
            }
         }
         )
@@ -23,7 +23,8 @@ export default function Pinterest () {
             return response.json();
           })
           .then(function(myJson) {
-            setAllItems(myJson);
+            console.log(26)
+
             let slicedMyJson = myJson.slice(sliceNum, sliceNum + 10);
             if (sliceNum >= myJson.length) setDoneSlicing(true);
             setItems(prevItems => [...prevItems, ...slicedMyJson]);
@@ -31,12 +32,19 @@ export default function Pinterest () {
           });
       }
       useEffect(()=>{
-        getData();
+        const abortController = new AbortController()
+        const signal = abortController.signal
+        getData(signal);
+        return () => {
+          console.log("aborting")
+          abortController.abort()
+      }
       },[sliceNum])
 
       const element = useRef()
 
       useEffect(() => {
+        console.log(loading, doneSlicing)
         if (loading || doneSlicing) return;
         const options = {
           root: null,
@@ -62,19 +70,19 @@ export default function Pinterest () {
       const pinterestItems = items.map((item) => {
           return (
             <div className="card">
-                {/* <img src={item.images["236x"].url} alt={item.pin_join.visual_annotation[getRandomInt(item.pin_join.visual_annotation.length)]}/> */}
-                <div>
+                <img src={item.images["236x"].url} alt={item.pin_join.visual_annotation[getRandomInt(item.pin_join.visual_annotation.length)]}/>
+                {/* <div>
                 {item.title !== "" ? item.title : "Cat Image"}
                 </div>
-                <p>//</p>
+                <p>//</p> */}
             </div>
           )
       })
 
       return (
-          <>
-            <div>{pinterestItems}</div>
-            <div ref={element}>{loading && "Loading..."}</div>
-          </>
+          <div className="pinterest">
+            <div className="pinterest-container">{pinterestItems}</div>
+            <div ref={element} className="loading">{loading && "Loading..."}</div>
+          </div>
       )
 }
