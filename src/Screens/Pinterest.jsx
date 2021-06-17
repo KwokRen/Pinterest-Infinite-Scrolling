@@ -50,6 +50,9 @@ export default function Pinterest () {
           }
         }, options)
         if (element.current) observer.observe(element.current);
+        return () => {
+          return observer.unobserve(element.current);
+        }
       }, [loading, doneSlicing]);
 
     function getRandomInt(max) {

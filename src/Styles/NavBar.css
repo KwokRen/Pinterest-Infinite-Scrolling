@@ -1,0 +1,15 @@
+.navbar {
+    background-color: #fff;
+    height: 5rem;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    margin-bottom: 5rem;
+}
+
+.navbar > img {
+    height: 3rem;
+    width: 3rem;
+    margin-left: 1rem;
+}
+
