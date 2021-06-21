@@ -3,13 +3,30 @@
     height: 5rem;
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     position: fixed;
+    z-index: 2;
 }
 
 .navbar > img {
     height: 3rem;
     width: 3rem;
+    margin-left: 5%;
 }
 
+.navbar > button {
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+    width: 5rem;
+    height: 50%;
+    border-radius: 1rem;
+    font-size: 1rem;
+    margin-right: 5%;
+}
+
+.navbar > button:hover {
+    background-color: #c9c9c9;
+    cursor: pointer;
+}
